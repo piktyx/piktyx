@@ -1,0 +1,41 @@
+directories:
+  app: ./build
+  output: ./release-builds
+
+appId: "com.piktyx.piktyx"
+productName: "Piktyx"
+
+publish:
+    provider: github
+    token: 6edb2550b2cc05386dc10af482b9d177e0e32e0a
+    vPrefixedTagName: false
+
+compression: maximum
+
+asar: false
+
+mac:
+  category: public.app-category.productivity
+  icon: ./build-helper/icon.icns
+
+dmg:
+  background: ./build-helper/dmgInstaller.tiff
+  icon: ./build-helper/icon.icns
+  iconSize: 128
+  contents: [{x: 380, y: 240, type: link, path: /Applications}, {x: 122, y: 240, type: file}]
+
+win:
+  icon: ./build-helper/logo.ico
+  target:
+    target: nsis
+    arch:
+    - x64
+    - ia32
+
+nsis:
+  perMachine: false
+  oneClick: true
+
+protocols: 
+  name: Piktyx
+  schemes: [piktyx] 

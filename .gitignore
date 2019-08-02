@@ -1,0 +1,14 @@
+*.db
+.DS_Store
+venv
+env
+__pycache__
+blog_old.md
+htmlcov
+node_modules
+.idea/*
+*.pyc
+tmp
+static/dist
+pictures
+client_secrets.json

@@ -1,0 +1,50 @@
+
+.boxclose{
+	z-index: 99;
+	position: absolute;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 50px;
+    background: rgb(31, 5, 58);
+    display: inline-block;
+    line-height: 0px;
+	padding: 0px 7px;   
+	right: 5px;    
+	top: 5px;
+}
+
+.icon{
+	height: 20px;
+	margin-top: 5px;
+}
+
+.boxinfo{
+	z-index: 99;
+	position: absolute;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 50px;
+    background: rgb(7, 56, 131);
+    display: inline-block;
+	line-height: 0px;
+	right: 35px;
+	padding: 0px 9px;    
+	top: 5px;   
+}
+
+.boxadd{
+	z-index: 99;
+	position: absolute;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 50px;
+    background: rgb(175, 24, 4);
+    display: inline-block;
+	line-height: 0px;
+	right: 65px;
+	padding: 0px 6px;      
+	top: 5px; 
+}
