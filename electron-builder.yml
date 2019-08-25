@@ -5,12 +5,6 @@ directories:
 appId: "com.piktyx.piktyx"
 productName: "Piktyx"
 
-publish:
-    provider: github
-    token: 6edb2550b2cc05386dc10af482b9d177e0e32e0a
-    vPrefixedTagName: false
-
-compression: maximum
 
 asar: false
 

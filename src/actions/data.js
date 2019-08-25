@@ -1,6 +1,6 @@
-import { FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA, SET_APP_LOADED, CHANGE_LANG_REQUEST, CHANGE_LANG_SUCCESS } from '../constants/index';
+import { FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA, SET_APP_LOADED, CHANGE_LANG_REQUEST, CHANGE_LANG_SUCCESS, CHANGE_LOCATION_REQUEST, CHANGE_LOCATION_SUCCESS } from '../constants/index';
 import { parseJSON } from '../utils/misc';
-import { data_about_user, change_lang } from '../utils/http_functions';
+import { data_about_user, change_lang, change_location } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
 
 export function receiveProtectedData(data) {
@@ -36,6 +36,18 @@ export function changeLangSuccess() {
     };
 }
 
+export function changeLocationRequest() {
+    return {
+        type: CHANGE_LOCATION_REQUEST,
+    };
+}
+
+export function changeLocationSuccess() {
+    return {
+        type: CHANGE_LOCATION_SUCCESS,
+    };
+}
+
 export function fetchProtectedData(token) {
     return (dispatch) => {
         dispatch(fetchProtectedDataRequest());
@@ -51,6 +63,22 @@ export function fetchProtectedData(token) {
             });
     };
     
+}
+
+export function changeLocation(token, location) {
+    return (dispatch) => {
+        dispatch(changeLocationRequest());
+        change_location(token, location)
+            .then(parseJSON)
+            .then(response => {
+                dispatch(changeLocationSuccess(response.result));
+            })
+            .catch(error => {
+                if (error.status === 401) {
+                    dispatch(logoutAndRedirect(error));
+                }
+            });
+    };
 }
 
 export function changeLang(token, lang) {

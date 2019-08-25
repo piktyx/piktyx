@@ -35,8 +35,9 @@ let mainWindow;
 
 function createWindow() {
   app.dirname = __dirname;
+  
 
-  // var server = require('./server/index.js');
+  //var server = require('./server.js');
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1600,
@@ -44,6 +45,7 @@ function createWindow() {
     autoHideMenuBar: true,
     webPreferences: {
       // The `plugins` have to be enabled.
+      nodeIntegration: true,
       plugins: true,
     },
   });
@@ -65,11 +67,11 @@ function createWindow() {
   // mainWindow = new BrowserWindow({width: 1600, height: 900})
   // and load the index.html of the app.
 
-  if (process.env.NODE_ENV == 'dev') {
+  //if (process.env.NODE_ENV == 'dev') {
     mainWindow.loadURL('http://localhost:3000');
-  } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
-  }
+  //} else {
+  //  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  //}
 
   // mainWindow.setFullScreen(true);
 

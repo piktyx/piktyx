@@ -1,6 +1,7 @@
 import { ADD_PICTURE_TAG_SUCCESS, ADD_PICTURE_TAG_FAILURE, ADD_PICTURE_TAG_REQUEST, DELETE_PICTURE_TAG_SUCCESS, DELETE_PICTURE_TAG_FAILURE, DELETE_PICTURE_TAG_REQUEST, UPLOAD_PICTURE_SUCCESS, UPLOAD_PICTURE_FAILURE, UPLOAD_PICTURE_REQUEST, RECEIVE_PICTURE_DATA, FETCH_PICTURE_REQUEST, FETCH_PICTURE_FAILURE, DELETE_PICTURE_FAILURE, DELETE_PICTURE_REQUEST, DELETE_PICTURE_SUCCESS } from '../constants/index';
 import { parseJSON } from '../utils/misc';
-import { upload_picture, fetch_pictures, delete_picture, add_picture_tag, delete_picture_tag } from '../utils/http_functions';
+import { upload_picture, fetch_pictures, delete_picture, add_picture_tag, add_picture_selected_tag, delete_picture_tag } from '../utils/http_functions';
+
 
 export function addPictureTagSuccess(data) {
     return {
@@ -155,6 +156,35 @@ export function addPictureTag(pic, tag, token) {
     };
 }
 
+export function addPictureSelectedTag(pics, tag, token) {
+    return function (dispatch) {
+        dispatch(addPictureTagRequest());
+        return add_picture_selected_tag(pics, tag, token)
+            .then(parseJSON)
+            .then(response => {
+                try {
+                    dispatch(addPictureTagSuccess(response));
+                } catch (e) {
+                    alert(e);
+                    dispatch(addPictureTagFailure({
+                        response: {
+                            status: 403,
+                            statusText: 'Add failed',
+                        },
+                    }));
+                }
+            })
+            .catch(error => {
+                dispatch(addPictureTagFailure({
+                    response: {
+                        status: 403,
+                        statusText: 'Add failed',
+                    },
+                }));
+            });
+    };
+}
+
 export function deletePictureTag(pic, tag, token) {
     return function (dispatch) {
         dispatch(deletePictureTagRequest());
@@ -184,10 +214,10 @@ export function deletePictureTag(pic, tag, token) {
     };
 }
 
-export function uploadPicture(data, token) {
+export function uploadPicture(data, location, token) {
     return function (dispatch) {
         dispatch(pictureUploadRequest());
-        return upload_picture(data, token)
+        return upload_picture(data, location, token)
             .then(parseJSON)
             .then(response => {
                 try {
@@ -213,10 +243,10 @@ export function uploadPicture(data, token) {
     };
 }
 
-export function fetchPictures(token) {
+export function fetchPictures(token, location) {
     return function (dispatch) {
         dispatch(pictureFetchRequest());
-        return fetch_pictures(token)
+        return fetch_pictures(token, location)
             .then(parseJSON)
             .then(response => {
                 try {
@@ -242,10 +272,10 @@ export function fetchPictures(token) {
     };
 }
 
-export function deletePicture(token, pic) {
+export function deletePicture(token, pic, location) {
     return function (dispatch) {
         dispatch(pictureDeleteRequest());
-        return delete_picture(token, pic)
+        return delete_picture(token, pic, location)
             .then(parseJSON)
             .then(response => {
                 try {

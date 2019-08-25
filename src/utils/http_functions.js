@@ -31,27 +31,51 @@ export function create_user(username, email, password) {
     });
 }
 
-export function upload_picture(data, token) {
-    return axios({
-        method: 'post',
-        url: `${API_URL}/api/upload_picture/` + token,
-        data: data,
-        config: { headers: {'Content-Type': 'multipart/form-data'} }
-    });
+export function upload_picture(data, location, token) {
+    if (location == 1){
+        return axios({
+            method: 'post',
+            url: `${API_URL}/api/upload_picture/` + token,
+            data: data,
+            config: { headers: {'Content-Type': 'multipart/form-data'} }
+        });
+    }else{
+           data.append("token", token);
+           return axios({
+                method: 'post',
+                url: `/upload`,
+                data: data
+            });
+    }
+    
 }
 
-export function fetch_pictures(token) {
-    return axios.get(`${API_URL}/api/fetch_pictures`, tokenConfig(token));
+export function fetch_pictures(token, location) {
+    if(location == 1){
+        return axios.get(`${API_URL}/api/fetch_pictures`, tokenConfig(token));
+    }else{
+        return axios.get(`/fetch_pictures?token=${token}`);
+    }
+    
 }
 
-export function delete_picture(token, pic) {
-    return axios.post( `${API_URL}/api/delete_picture/` + token, {
-        pic,
-    });
+export function delete_picture(token, pic, location) {
+    if(location == 1){
+        return axios.post( `${API_URL}/api/delete_picture/` + token, {
+            pic,
+        });
+    }else{
+        return axios.post( `/delete_picture`, {
+            token,
+            pic,
+        });
+    }
+    
 }
 
-export function add_folder(folder, tags, token) {
+export function add_folder(folder, tags, password, token) {
     return axios.post(`${API_URL}/api/add_folder/` + token, {
+        password,
         folder,
         tags,
     });
@@ -60,6 +84,13 @@ export function add_folder(folder, tags, token) {
 export function add_picture_folder(pic, folders, token) {
     return axios.post(`${API_URL}/api/add_picture_folder/` + token, {
         pic,
+        folders,
+    });
+}
+
+export function add_picture_selected_folder(pics, folders, token) {
+    return axios.post(`${API_URL}/api/add_picture_selected_folder/` + token, {
+        pics,
         folders,
     });
 }
@@ -74,6 +105,13 @@ export function delete_picture_folder(pic, folder, token) {
 export function add_picture_tag(pic, tag, token) {
     return axios.post(`${API_URL}/api/add_picture_tag/` + token, {
         pic,
+        tag,
+    });
+}
+
+export function add_picture_selected_tag(pics, tag, token) {
+    return axios.post(`${API_URL}/api/add_picture_selected_tag/` + token, {
+        pics,
         tag,
     });
 }
@@ -98,6 +136,12 @@ export function delete_folder(token, id) {
 export function change_lang(token, lang) {
     return axios.post( `${API_URL}/api/change_lang/` + token, {
         lang,
+    });
+}
+
+export function change_location(token, location) {
+    return axios.post( `${API_URL}/api/change_location/` + token, {
+        location,
     });
 }
 

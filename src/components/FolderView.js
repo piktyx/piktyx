@@ -35,7 +35,8 @@ class FolderView extends React.Component { // eslint-disable-line react/prefer-s
         super(props);
         this.state = {
           folder: "",
-          tags: ""
+          tags: "",
+          password: ""
         }
     }
 
@@ -56,7 +57,7 @@ class FolderView extends React.Component { // eslint-disable-line react/prefer-s
     }
 
     addFolder = () => {
-        this.props.actions.folderActions.addFolder(this.state.folder, this.state.tags, this.props.token).then(() => {
+        this.props.actions.folderActions.addFolder(this.state.folder, this.state.tags, this.state.password, this.props.token).then(() => {
             this.props.actions.folderActions.fetchFolders(this.props.token);
         });
         this.setState({folder: "", tags: ""})
@@ -74,6 +75,10 @@ class FolderView extends React.Component { // eslint-disable-line react/prefer-s
 
     changeTag = (e) => {
         this.setState({tags: e.target.value});
+    }
+
+    changePassword = (e) => {
+        this.setState({password: e.target.value});
     }
 
     getFolder = (folders_list) => {
@@ -105,8 +110,7 @@ class FolderView extends React.Component { // eslint-disable-line react/prefer-s
                                     this.getFolder(this.props.folders).map((value, key) => {
                                         return (
                                             <div key={key}>
-                                                <li>{value.name} | <b>{t("TAGS")}</b> : {value.tags} | <Button className="blue darken-4 " onClick={() => this.deleteFolder(value.id)}>{t("DELETE")}</Button></li><br/>
-                                                
+                                                <li>{value.name} | <b>{t("TAGS")}</b> : {value.tags === "" ? t("NO_TAG") : value.tags } | <Button className="blue darken-4 " onClick={() => this.deleteFolder(value.id)}>{t("DELETE")}</Button></li><br/>
                                             </div>
                                         )
                                     })
@@ -126,6 +130,13 @@ class FolderView extends React.Component { // eslint-disable-line react/prefer-s
                                   type="text"
                                   value={this.state.tags}
                                   onChange={(e) => this.changeTag(e)}
+                        />
+                        <TextInput
+                                  label={t("PASSWORD")}
+                                  placeholder={t("OPTIONAL")}
+                                  type="password"
+                                  value={this.state.password}
+                                  onChange={(e) => this.changePassword(e)}
                         />
                         <Button className="blue darken-4 " onClick={() => this.addFolder()}>{t("ADD")}</Button>
                     </div>

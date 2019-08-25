@@ -73,11 +73,12 @@ class MainView extends React.Component {
         const formData = new FormData()
 
         files.forEach((file, i) => {
-            formData.append(i, file)
+            formData.append(`${i}_${this.props.data.data.id}`, file)
         })
 
+        //formData.append('token', this.props.token);
         
-        this.props.actions.picActions.uploadPicture(formData, this.props.token);
+        this.props.actions.picActions.uploadPicture(formData, this.props.data.data.location, this.props.token);
 
     }
 

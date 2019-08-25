@@ -1,6 +1,6 @@
 import { ADD_PICTURE_FOLDER_SUCCESS, ADD_PICTURE_FOLDER_FAILURE, ADD_PICTURE_FOLDER_REQUEST, DELETE_PICTURE_FOLDER_SUCCESS, DELETE_PICTURE_FOLDER_FAILURE, DELETE_PICTURE_FOLDER_REQUEST, ADD_FOLDER_SUCCESS, ADD_FOLDER_FAILURE, ADD_FOLDER_REQUEST, RECEIVE_FOLDER_DATA, FETCH_FOLDER_REQUEST, FETCH_FOLDER_FAILURE, DELETE_FOLDER_FAILURE, DELETE_FOLDER_REQUEST, DELETE_FOLDER_SUCCESS } from '../constants/index';
 import { parseJSON } from '../utils/misc';
-import { add_folder, fetch_folders, delete_folder, add_picture_folder, delete_picture_folder } from '../utils/http_functions';
+import { add_folder, fetch_folders, delete_folder, add_picture_folder, add_picture_selected_folder, delete_picture_folder } from '../utils/http_functions';
 
 export function addPictureSuccess(data) {
     return {
@@ -119,10 +119,10 @@ export function folderDeleteRequest() {
     };
 }
 
-export function addFolder(folder, tags, token) {
+export function addFolder(folder, tags, password, token) {
     return function (dispatch) {
         dispatch(folderUploadRequest());
-        return add_folder(folder, tags, token)
+        return add_folder(folder, tags, password, token)
             .then(parseJSON)
             .then(response => {
                 try {
@@ -152,6 +152,35 @@ export function addPictureFolder(pic, folders, token) {
     return function (dispatch) {
         dispatch(addPictureRequest());
         return add_picture_folder(pic, folders, token)
+            .then(parseJSON)
+            .then(response => {
+                try {
+                    dispatch(addPictureSuccess(response));
+                } catch (e) {
+                    alert(e);
+                    dispatch(addPictureFailure({
+                        response: {
+                            status: 403,
+                            statusText: 'Add failed',
+                        },
+                    }));
+                }
+            })
+            .catch(error => {
+                dispatch(addPictureFailure({
+                    response: {
+                        status: 403,
+                        statusText: 'Add failed',
+                    },
+                }));
+            });
+    };
+}
+
+export function addPictureSelectedFolder(pics, folders, token) {
+    return function (dispatch) {
+        dispatch(addPictureRequest());
+        return add_picture_selected_folder(pics, folders, token)
             .then(parseJSON)
             .then(response => {
                 try {

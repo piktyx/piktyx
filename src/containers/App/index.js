@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Route, Switch, Redirect } from 'react-router';
 
 /* application components */
-import Header from '../../components/Header';
+
 import { HomeContainer } from '../../containers/HomeContainer';
 import LoginView from '../../components/LoginView';
 import RegisterView from '../../components/RegisterView';
@@ -27,12 +27,6 @@ class App extends React.Component { // eslint-disable-line react/prefer-stateles
     render() {
         return (
             <div>
-                    <Header />
-                    <div
-                        id="main"
-                        className="container"
-                        style={{ marginTop: 10, paddingBottom: 250 }}
-                    >
                             <Switch>
                                 <Route path="/main" component={requireAuthentication(MainView)} />
                                 <Route path="/options" component={requireAuthentication(OptionsView)} />
@@ -44,7 +38,6 @@ class App extends React.Component { // eslint-disable-line react/prefer-stateles
                                 <Route path="/" component={requireNoAuthentication(HomeContainer)} />
                                 <Route path="*" component={DetermineAuth(NotFound)} />
                             </Switch>
-                    </div>
             </div>
         );
     }

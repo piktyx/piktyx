@@ -9,6 +9,7 @@ node_modules
 .idea/*
 *.pyc
 tmp
-static/dist
+dist
+build
+release-builds
 pictures
-client_secrets.json

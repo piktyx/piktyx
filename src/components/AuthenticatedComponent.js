@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 import * as actionCreatorsAuth from '../actions/auth';
 import * as actionCreatorsData from '../actions/data';
 import {history} from '../store/configureStore';
+import { API_URL } from '../constants/index';
+
+import { css } from '@emotion/core';
+import { GridLoader } from 'react-spinners';
+import Header from './Header/index';
 
 import { withTranslation } from 'react-i18next';
 
@@ -26,6 +31,14 @@ function mapDispatchToProps(dispatch) {
         }
     };
 }
+
+const override = css`
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-color: blue;
+`;
 
 
 export function requireAuthentication(Component) {
@@ -51,21 +64,18 @@ export function requireAuthentication(Component) {
                 }
                 
             }
-            
-            
             this.checkAuth(nextProps);
         }
 
         checkAuth(props = this.props) {
 
             if (!props.isAuthenticated) {
+
                 const token = localStorage.getItem('token');
                 if (!token) {
-
                     history.push('/home');
                 } else {
-
-                    fetch('/api/is_token_valid', {
+                    fetch(API_URL + '/api/is_token_valid', {
                         method: 'post',
                         credentials: 'include',
                         headers: {
@@ -75,8 +85,9 @@ export function requireAuthentication(Component) {
                         body: JSON.stringify({ token }),
                     })
                         .then(res => {
-                          
+
                             if (res.status === 200) {
+
                                 this.props.actions.authActions.loginUserSuccess(token);
 
                                 this.setState({
@@ -92,6 +103,7 @@ export function requireAuthentication(Component) {
 
                 }
             } else {
+
                 this.setState({
                     loaded_if_needed: true,
                 });
@@ -103,8 +115,27 @@ export function requireAuthentication(Component) {
             return (
                 <div>
                     {this.props.isAuthenticated 
-                        ? <Component {...this.props} />
-                        : null
+                        ? 
+                            <div>
+                                <Header />
+                                <div
+                                    id="main"
+                                    className="container"
+                                    style={{ marginTop: 10, paddingBottom: 250 }}
+                                >
+                                    <Component {...this.props} />
+                                </div>
+                            </div>
+                        : 
+                            <div className='sweet-loading'>
+                                <GridLoader
+                                    css={override}
+                                    sizeUnit={"px"}
+                                    size={20}
+                                    color={'#123abc'}
+                                    loading={true}
+                                />
+                            </div> 
                     }
                 </div>
             );
